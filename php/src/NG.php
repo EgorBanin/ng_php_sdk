@@ -93,7 +93,7 @@ class NG {
         
         if (extension_loaded('http')) {
             $request = new HttpRequest($url, HttpRequest::METH_GET);
-            $request->setOptions(array('connecttimeout' => 10, 'timeout' => 10));
+            $request->setOptions(array('connecttimeout' => 10, 'timeout' => 20));
             $request->addQueryData($params);
             try {
                 $response = $request->send();
@@ -101,9 +101,31 @@ class NG {
             } catch(\Exception $e) {
                 throw $e;
             }
+        } elseif (extension_loaded('curl')) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url.'?'.http_build_query($params));
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 20);
             
-            return $body;
+            $body = curl_exec($ch);
+            
+            if (curl_errno($ch) !== 0) {
+                throw new \Exception('Не удалось выполнить HTTP-запрос.');
+            }
+            
+            curl_close($ch);
+        } else {
+            $context = stream_context_create(array(
+                'http' => array(
+                    'method'=>"GET"
+                )
+            ));
+            $body = file_get_contents($url.'?'.http_build_query($params), false, $context);
         }
+        
+        return $body;
     }
     
 }
