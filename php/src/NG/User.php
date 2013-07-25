@@ -46,8 +46,9 @@ class User {
             throw new \Exception('Не удалось распарсить ответ.');
         }
         
+        $this->apps = array();
+        
         if ($data['result'] === true) {
-            $this->apps = array();
             require_once 'NG/App.php';
             
             foreach ($data['data'] as $appData) {
@@ -83,7 +84,7 @@ class User {
         
         if ($data['result'] === true) {
             return true;
-        } elseif ($data['errno'] !== 200) {
+        } else {
             throw new \Exception('Ошибка при обращении к API');
         }
     }

@@ -116,13 +116,15 @@ class NG {
             }
             
             curl_close($ch);
-        } else {
+        } elseif(ini_get('allow_url_fopen')) {
             $context = stream_context_create(array(
                 'http' => array(
                     'method'=>"GET"
                 )
             ));
             $body = file_get_contents($url.'?'.http_build_query($params), false, $context);
+        } else {
+            throw new \Exception('Не удалось выполнить HTTP-запрос. Установите расширение HTTP, cURL или включите директиву allow_url_fopen в php.ini.');
         }
         
         return $body;
