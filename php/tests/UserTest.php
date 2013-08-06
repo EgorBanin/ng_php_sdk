@@ -24,7 +24,7 @@ class UserTest extends PHPUnit_Framework_TestCase {
         
         $this->assertEquals(
             array(
-                '100500' => new \NG\App('100500', 'testApp', 'foo bar')
+                '100500' => new \NG\App($ng, '100500', 'testApp', 'foo bar')
             ),
             $user->getApps()
         );
@@ -54,7 +54,7 @@ class UserTest extends PHPUnit_Framework_TestCase {
         
         $this->assertEquals(
             array(
-                '100500'=> new \NG\App('100500', 'testApp', 'foo bar')
+                '100500'=> new \NG\App($ng, '100500', 'testApp', 'foo bar')
             ),
             $user->getApps()
         );

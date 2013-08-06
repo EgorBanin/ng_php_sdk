@@ -52,7 +52,7 @@ class User {
             require_once 'NG/App.php';
             
             foreach ($data['data'] as $appData) {
-                $this->apps[$appData['id']] = new \NG\App($appData['id'], $appData['title'], $appData['description']);
+                $this->apps[$appData['id']] = new \NG\App($this->ng, $appData['id'], $appData['title'], $appData['description']);
             }
         } elseif ($data['errno'] !== 200) {
             throw new \Exception('Ошибка при обращении к API');
