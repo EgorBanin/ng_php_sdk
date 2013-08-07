@@ -70,4 +70,24 @@ class UserTest extends PHPUnit_Framework_TestCase {
         );
     }
     
+    public function testAsXML() {
+        require_once 'NG.php';
+        $ng = new NG('7', '0123456789ABCDEF');
+        
+        require_once 'NG/User.php';
+        $user = new \NG\User($ng, '100500', 'admin');
+        
+        $this->assertXmlStringEqualsXmlString(
+<<<XML
+<profiles>
+    <user>
+        <uid>100500</uid>
+        <nickname><![CDATA[admin]]></nickname>
+    </user>
+</profiles>
+XML
+            , $user->asXML()
+        );
+    }
+    
 }

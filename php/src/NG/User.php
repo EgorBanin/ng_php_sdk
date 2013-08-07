@@ -89,4 +89,15 @@ class User {
         }
     }
     
+    public function asXML() {
+        return <<<XML
+<profiles>
+    <user>
+        <uid>$this->id</uid>
+        <nickname><![CDATA[$this->nickname]]></nickname>
+    </user>
+</profiles>
+XML;
+    }
+    
 }
