@@ -89,6 +89,9 @@ class User {
         }
     }
     
+    /**
+     * @return string XML
+     */
     public function asXML() {
         return <<<XML
 <profiles>
