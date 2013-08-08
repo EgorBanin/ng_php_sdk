@@ -39,6 +39,8 @@
 
 class NG {
     
+    const API_REQEST_TIMEOUT = 600;
+    
     private $siteId;
     
     private $secretKey;
@@ -72,7 +74,7 @@ class NG {
         return time();
     }
     
-    public function sign(array $params) {
+    public final function sign(array $params) {
         // сортируем прараметры по ключу
         ksort($params, SORT_STRING);
 
@@ -86,6 +88,26 @@ class NG {
         $signature = md5($paramsStr.$this->secretKey);
 
         return $signature;
+    }
+    
+    /**
+     * Проверка входящего API-запроса
+     * 
+     * @param array $request
+     */
+    public final function validateAPIRequest(array $request) {
+        $time = isset($request['time'])? $request['time'] : null;
+        
+        if ($time < (time() - self::API_REQEST_TIMEOUT)) {
+            return false;
+        }
+        
+        $sig = isset($request['sig'])? $request['sig'] : null;
+        unset($request['sig']);
+        
+        $testSig = $this->sign($request);
+        
+        return ($testSig === $sig);
     }
     
     public function request(array $params) {

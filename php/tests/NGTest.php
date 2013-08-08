@@ -4,7 +4,6 @@ class NGTest extends PHPUnit_Framework_TestCase {
     
     public function testSign() {
         require_once 'NG.php';
-        
         $ng = new NG('7', '1234567890ABCDEF');
         
         $params = array(
@@ -17,6 +16,32 @@ class NGTest extends PHPUnit_Framework_TestCase {
             md5('123=bar=testfoo=1231234567890ABCDEF'),
             $ng->sign($params)
         );
+    }
+    
+    public function testValidateAPIRequest() {
+        require_once 'NG.php';
+        $ng = new NG('7', '1234567890ABCDEF');
+        
+        $badSignedRequest = array(
+            'uid' => '1',
+            'time' => time(),
+            'sig' => 'badsig'
+        );
+        $this->assertFalse($ng->validateAPIRequest($badSignedRequest));
+        
+        $overdueRequest = array(
+            'uid' => '1',
+            'time' => time() - (NG::API_REQEST_TIMEOUT + 1),
+        );
+        $overdueRequest['sig'] = $ng->sign($overdueRequest);
+        $this->assertFalse($ng->validateAPIRequest($overdueRequest));
+        
+        $validRequest = array(
+            'uid' => '1',
+            'time' => time(),
+        );
+        $validRequest['sig'] = $ng->sign($validRequest);
+        $this->assertTrue($ng->validateAPIRequest($validRequest));
     }
     
 }
