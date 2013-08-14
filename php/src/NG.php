@@ -164,4 +164,35 @@ class NG {
         return $response;
     }
     
+    public function getApps() {
+        $params = array(
+            'method' => 'apps.getInfo',
+            'format' => 'json',
+            'site_id' => $this->siteId
+        );
+        $params['sig'] = $this->sign($params);
+        
+        $response = $this->request($params);
+        $data = json_decode($response, true);
+        
+        if ($data === null && json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception('Не удалось распарсить ответ.');
+        }
+        
+        
+        $apps = array();
+        
+        if ($data['result'] === true) {
+            require_once 'NG/App.php';
+            
+            foreach ($data['data'] as $appData) {
+                $apps[$appData['id']] = new \NG\App($this, $appData['id'], $appData['title'], $appData['description']);
+            }
+        } else {
+            throw new \Exception('Ошибка при обращении к API');
+        }
+        
+        return $apps;
+    }
+    
 }

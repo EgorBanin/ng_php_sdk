@@ -61,4 +61,32 @@ class NGTest extends PHPUnit_Framework_TestCase {
         );
     }
     
+    public function testGetApps() {
+        require_once 'NG.php';
+        
+        $ng = $this->getMock('NG', array('request'), array('7', '0123456789ABCDEF'));
+        $ng
+            ->expects($this->any())
+            ->method('request')
+            ->will($this->returnValue('{
+                "result": true,
+                "data": {
+                    "100500": {
+                        "id": "100500",
+                        "title": "testApp",
+                        "description": "foo bar"
+                    }
+                }
+            }'));
+        
+        require_once 'NG/App.php';
+        
+        $this->assertEquals(
+            array(
+                '100500' => new \NG\App($ng, '100500', 'testApp', 'foo bar')
+            ),
+            $ng->getApps()
+        );
+    }
+    
 }
