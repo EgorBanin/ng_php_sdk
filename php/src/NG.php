@@ -152,4 +152,16 @@ class NG {
         return $body;
     }
     
+    public function handleAPIRequest(array $request) {
+        require_once 'NG/Response.php';
+        
+        if ($this->validateAPIRequest($request)) {
+            $response = new \NG\Response(200);
+        } else {
+            $response = new \NG\Response(403);
+        }
+        
+        return $response;
+    }
+    
 }

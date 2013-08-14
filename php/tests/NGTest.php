@@ -44,4 +44,21 @@ class NGTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($ng->validateAPIRequest($validRequest));
     }
     
+    public function testHandleAPIRequest() {
+        require_once 'NG.php';
+        $ng = new NG('7', '1234567890ABCDEF');
+        
+        $validRequest = array(
+            'uid' => '1',
+            'time' => time(),
+        );
+        $validRequest['sig'] = $ng->sign($validRequest);
+        
+        require_once 'NG/Response.php';
+        $this->assertEquals(
+            new \NG\Response(200),
+            $ng->handleAPIRequest($validRequest)
+        );
+    }
+    
 }
