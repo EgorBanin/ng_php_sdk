@@ -8,22 +8,23 @@ class App {
     const AGE_LIMIT_18 = '18+';
     
     const ICON_SIZE_SMALL = '80x80';
+    const ICON_SIZE_MEDIUM = '128x128';
     
     private $ng;
     
     private $id;
     
-    private $title;
+    private $name;
     
-    private $desc;
+    private $description;
     
     private $ageLimit;
     
-    public function __construct(\NG $ng, $id, $title, $desc, $ageLimit = self::AGE_LIMIT_0) {
+    public function __construct(\NG $ng, $id, $name, $description, $ageLimit = self::AGE_LIMIT_0) {
         $this->ng = $ng;
         $this->id = $id;
-        $this->title = $title;
-        $this->desc = $desc;
+        $this->name = $name;
+        $this->description=  $description;
         $this->ageLimit = $ageLimit;
     }
     
@@ -31,8 +32,8 @@ class App {
         return $this->id;
     }
     
-    public function getTitle() {
-        return $this->title;
+    public function getName() {
+        return $this->name;
     }
     
     public function getIcon($size = self::ICON_SIZE_SMALL) {
@@ -47,5 +48,9 @@ class App {
         $params['sig'] = $this->ng->sign($params);
         
         return 'http://api2.nextgame.ru/iframe?'.http_build_query($params);
+    }
+    
+    public function getDescription() {
+        return $this->description;
     }
 }
