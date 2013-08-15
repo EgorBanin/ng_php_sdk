@@ -62,6 +62,9 @@ EOT;
             if ($this->user->getAvatar()) {
                 $params['usr_avatar_url'] = $this->user->getAvatar();
             }
+            if ($this->user->getPhoto()) {
+                $params['usr_photo_url'] = $this->user->getPhoto();
+            }
             $params['t'] = $this->ng->getToken();
             $params['sig'] = $this->ng->sign($params);
         }

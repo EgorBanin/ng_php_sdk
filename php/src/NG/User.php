@@ -19,6 +19,8 @@ class User {
     
     private $avatar;
     
+    private $photo;
+    
     private $apps = null;
 
     public function __construct(\NG $ng, $id, $nickname) {
@@ -120,6 +122,14 @@ class User {
     
     public function getAvatar() {
         return $this->avatar;
+    }
+    
+    public function setPhoto($url) {
+        $this->photo = $url;
+    }
+    
+    public function getPhoto() {
+        return $this->photo;
     }
     
     /**
