@@ -33,9 +33,7 @@ class Code {
         );
         
         if ($this->appId) {
-            $url .= '/link';
             $params['app_id'] = $this->appId;
-            $params['linktype'] = 1;
             $template = '<script type="text/javascript" src="%s"></script>';
         } else {
             $url .= '/catalogue';
@@ -55,6 +53,15 @@ EOT;
         if ($this->user) {
             $params['user_id'] = $this->user->getId();
             $params['usr_nickname'] = $this->user->getNickname();
+            if ($this->user->getSex()) {
+                $params['usr_sex'] = $this->user->getSex();
+            }
+            if ($this->user->getBirthday()) {
+                $params['usr_birthday'] = $this->user->getBirthday()->format('Y-m-d');
+            }
+            if ($this->user->getAvatar()) {
+                $params['usr_avatar_url'] = $this->user->getAvatar();
+            }
             $params['t'] = $this->ng->getToken();
             $params['sig'] = $this->ng->sign($params);
         }

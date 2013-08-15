@@ -4,11 +4,20 @@ namespace NG;
 
 class User {
     
+    const SEX_M = 'm';
+    const SEX_F = 'f';
+    
     private $ng;
     
     private $id;
     
     private $nickname;
+    
+    private $sex;
+    
+    private $birthday;
+    
+    private $avatar;
     
     private $apps = null;
 
@@ -87,6 +96,30 @@ class User {
         } else {
             throw new \Exception('Ошибка при обращении к API');
         }
+    }
+    
+    public function setSex($sex) {
+        $this->sex = $sex;
+    }
+    
+    public function getSex() {
+        return $this->sex;
+    }
+    
+    public function setBirthday(DateTime $birthday) {
+        $this->birthday = $birthday;
+    }
+    
+    public function getBirthday() {
+        return $this->birthday;
+    }
+    
+    public function setAvatar($url) {
+        $this->avatar = $url;
+    }
+    
+    public function getAvatar() {
+        return $this->avatar;
     }
     
     /**
