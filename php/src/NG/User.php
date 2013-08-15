@@ -106,7 +106,7 @@ class User {
         return $this->sex;
     }
     
-    public function setBirthday(DateTime $birthday) {
+    public function setBirthday(\DateTime $birthday) {
         $this->birthday = $birthday;
     }
     
